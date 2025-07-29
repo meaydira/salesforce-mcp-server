@@ -90,7 +90,8 @@ router.get('/openai-tools.json', (req, res) => {
         input: {
           id: "string",
           Title: "string",
-          AIM__LinkedIn_URL__c: "string"
+          AIM__LinkedIn_URL__c: "string",
+	  LinkedIn__c: "string"
         },
         output: {
           id: "string",
