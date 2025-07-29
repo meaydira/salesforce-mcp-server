@@ -10,9 +10,14 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// ✅ Optional root route for sanity checks (used by MCP validation)
+app.get('/', (req, res) => {
+  res.send('Salesforce MCP server is up and running.');
+});
+
 // Routes
-app.use('/salesforce', salesforceRoutes); // Internal tools
-app.use('/search', searchRoute);          // ✅ MCP search tool
+app.use('/salesforce', salesforceRoutes); // Internal admin endpoints
+app.use('/search', searchRoute);          // ✅ MCP-compatible tool endpoint
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
