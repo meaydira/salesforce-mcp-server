@@ -157,6 +157,7 @@ router.get('/openai-tools.json', (req, res) => {
           id: "string"
         }
       }
+	
     ]
   });
 });
