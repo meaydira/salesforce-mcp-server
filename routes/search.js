@@ -1,29 +1,36 @@
 const express = require('express');
+const jsforce = require('jsforce');
 const router = express.Router();
 
+async function connect() {
+  const conn = new jsforce.Connection({ loginUrl: 'https://autotech.my.salesforce.com' });
+  await conn.login(process.env.USERNAME, process.env.PASSWORD + process.env.SECURITY_TOKEN);
+  return conn;
+}
+
 router.post('/', async (req, res) => {
+  const { query } = req.body;
+
+  if (!query || typeof query !== 'string') {
+    return res.status(200).json({ items: [] });
+  }
+
   try {
-    const { query } = req.body;
+    const conn = await connect();
+    const result = await conn.query(
+      `SELECT Id, Name, Website FROM Account WHERE Name LIKE '%${query}%' LIMIT 20`
+    );
 
-    res.setHeader('Content-Type', 'application/json');
-
-    if (!query || typeof query !== 'string') {
-      return res.status(200).json({ items: [] }); // Return empty items array if missing or malformed
-    }
-
-    const items = [
-      {
-        id: "001-fake",
-        title: `Result for "${query}"`,
-        snippet: "This is a dummy result from the Salesforce MCP server.",
-        url: "https://example.com/account/001-fake"
-      }
-    ];
+    const items = result.records.map(account => ({
+      id: account.Id,
+      title: account.Name,
+      snippet: account.Website || 'No website provided',
+      url: `https://autotech.my.salesforce.com/${account.Id}`
+    }));
 
     return res.status(200).json({ items });
   } catch (err) {
-    // MCP requires a valid JSON response no matter what
-    res.setHeader('Content-Type', 'application/json');
+    console.error('Salesforce search error:', err);
     return res.status(200).json({ items: [] });
   }
 });
