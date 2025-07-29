@@ -2,7 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const salesforceRoutes = require('./routes/salesforce');
-const mcpSearch = require('./routes/search'); //  New MCP-compatible route
+const searchRoute = require('./routes/search'); // ✅ MCP-compatible route
 
 dotenv.config();
 
@@ -11,8 +11,8 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
-app.use('/salesforce', salesforceRoutes);
-app.use('/search', mcpSearch); //  MCP tool endpoint
+app.use('/salesforce', salesforceRoutes); // Internal tools
+app.use('/search', searchRoute);          // ✅ MCP search tool
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
