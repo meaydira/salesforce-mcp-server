@@ -23,6 +23,19 @@ router.get('/openai-tools.json', (req, res) => {
             }
           ]
         }
+      },
+      {
+        name: "updateAccount",
+        description: "Update Salesforce Account fields by ID",
+        path: "/account/:id",
+        method: "PATCH",
+        input: {
+          id: "string",
+          fields: "object"
+        },
+        output: {
+          success: "boolean"
+        }
       }
     ]
   });
