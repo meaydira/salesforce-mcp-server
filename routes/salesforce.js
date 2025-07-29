@@ -48,18 +48,44 @@ router.get('/account/:id', async (req, res) => {
   }
 });
 
-// Create a Lead
-router.post('/lead', async (req, res) => {
+// 🔧 Create Account
+router.post('/account', async (req, res) => {
   try {
     const conn = await connect();
-    const result = await conn.sobject("Lead").create(req.body);
+    const result = await conn.sobject("Account").create(req.body);
     res.json(result);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// Update Contact by ID
+// 🔧 Update Account
+router.patch('/account/:id', async (req, res) => {
+  try {
+    const conn = await connect();
+    const result = await conn.sobject("Account").update({
+      Id: req.params.id,
+      ...req.body
+    });
+    res.json(result);
+  } catch (err) {
+    console.error('Salesforce Account update error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 🔧 Create Contact
+router.post('/contact', async (req, res) => {
+  try {
+    const conn = await connect();
+    const result = await conn.sobject("Contact").create(req.body);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 🔧 Update Contact
 router.patch('/contact/:id', async (req, res) => {
   try {
     const conn = await connect();
@@ -73,6 +99,18 @@ router.patch('/contact/:id', async (req, res) => {
   }
 });
 
+// Lead creation (already present)
+router.post('/lead', async (req, res) => {
+  try {
+    const conn = await connect();
+    const result = await conn.sobject("Lead").create(req.body);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Env check
 router.get('/env-check', (req, res) => {
   res.json({
     username: process.env.USERNAME,
@@ -80,6 +118,5 @@ router.get('/env-check', (req, res) => {
     tokenSet: !!process.env.SECURITY_TOKEN,
   });
 });
-
 
 module.exports = router;
