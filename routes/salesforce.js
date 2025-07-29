@@ -48,7 +48,7 @@ router.get('/account/:id', async (req, res) => {
   }
 });
 
-// 🔧 Create Account
+// Create Account
 router.post('/account', async (req, res) => {
   try {
     const conn = await connect();
@@ -59,7 +59,7 @@ router.post('/account', async (req, res) => {
   }
 });
 
-// 🔧 Update Account
+// Update Account
 router.patch('/account/:id', async (req, res) => {
   try {
     const conn = await connect();
@@ -74,7 +74,7 @@ router.patch('/account/:id', async (req, res) => {
   }
 });
 
-// 🔧 Create Contact
+// Create Contact
 router.post('/contact', async (req, res) => {
   try {
     const conn = await connect();
@@ -85,7 +85,7 @@ router.post('/contact', async (req, res) => {
   }
 });
 
-// 🔧 Update Contact
+// Update Contact
 router.patch('/contact/:id', async (req, res) => {
   try {
     const conn = await connect();
@@ -99,13 +99,34 @@ router.patch('/contact/:id', async (req, res) => {
   }
 });
 
-// Lead creation (already present)
+// Create Lead
 router.post('/lead', async (req, res) => {
   try {
     const conn = await connect();
     const result = await conn.sobject("Lead").create(req.body);
     res.json(result);
   } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Post to Chatter
+router.post('/chatter/post', async (req, res) => {
+  const { parentId, body } = req.body;
+  if (!parentId || !body) {
+    return res.status(400).json({ error: 'Missing parentId or body' });
+  }
+
+  try {
+    const conn = await connect();
+    const result = await conn.sobject("FeedItem").create({
+      ParentId: parentId,
+      Body: body,
+      Type: 'TextPost'
+    });
+    res.json({ success: true, id: result.id });
+  } catch (err) {
+    console.error('Chatter post error:', err);
     res.status(500).json({ error: err.message });
   }
 });

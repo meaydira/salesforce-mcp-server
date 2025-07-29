@@ -83,6 +83,21 @@ router.get('/openai-tools.json', (req, res) => {
         }
       },
       {
+        name: "updateContact",
+        description: "Update Salesforce Contact fields by ID",
+        path: "/salesforce/contact/:id",
+        method: "PATCH",
+        input: {
+          id: "string",
+          Title: "string",
+          AIM__LinkedIn_URL__c: "string"
+        },
+        output: {
+          id: "string",
+          success: "boolean"
+        }
+      },
+      {
         name: "createLead",
         description: "Create a new Salesforce Lead",
         path: "/salesforce/lead",
@@ -125,6 +140,20 @@ router.get('/openai-tools.json', (req, res) => {
         },
         output: {
           records: "array"
+        }
+      },
+      {
+        name: "postChatterComment",
+        description: "Post a comment to the Chatter feed of an Account or other Salesforce object",
+        path: "/salesforce/chatter/post",
+        method: "POST",
+        input: {
+          parentId: "string",
+          body: "string"
+        },
+        output: {
+          success: "boolean",
+          id: "string"
         }
       }
     ]
