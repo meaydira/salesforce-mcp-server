@@ -1,0 +1,21 @@
+{
+  "tools": [
+    {
+      "name": "search",
+      "description": "Search Salesforce accounts",
+      "path": "/search",
+      "method": "POST",
+      "input": { "query": "string" },
+      "output": {
+        "items": [
+          {
+            "id": "string",
+            "title": "string",
+            "snippet": "string",
+            "url": "string"
+          }
+        ]
+      }
+    }
+  ]
+}
