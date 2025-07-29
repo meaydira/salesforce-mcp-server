@@ -19,7 +19,7 @@ app.use('/search', searchRoute);
 app.use('/salesforce', salesforceRoutes);
 
 // ✅ Mount manifest route last to prevent override
-app.use('/', toolsManifest);
+app.use('/.well-known', toolsManifest);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
