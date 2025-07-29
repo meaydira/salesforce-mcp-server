@@ -73,4 +73,13 @@ router.patch('/contact/:id', async (req, res) => {
   }
 });
 
+router.get('/env-check', (req, res) => {
+  res.json({
+    username: process.env.USERNAME,
+    passwordSet: !!process.env.PASSWORD,
+    tokenSet: !!process.env.SECURITY_TOKEN,
+  });
+});
+
+
 module.exports = router;
