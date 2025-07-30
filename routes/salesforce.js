@@ -48,15 +48,11 @@ router.get('/account/:id', async (req, res) => {
   }
 });
 
-// Create Account
+// 🔧 Create Account
 router.post('/account', async (req, res) => {
   try {
     const conn = await connect();
-    const { RecordTypeId, ...accountFields } = req.body;
-    const result = await conn.sobject("Account").create({
-      ...accountFields,
-      ...(RecordTypeId && { RecordTypeId })
-    });
+    const result = await conn.sobject("Account").create(req.body);
     res.json(result);
   } catch (err) {
     res.status(500).json({ error: err.message });
