@@ -1,0 +1,322 @@
+openapi: 3.1.0
+info:
+  title: Salesforce MCP Connector
+  description: REST API to fetch and update Salesforce accounts, leads, contacts, and chatter.
+  version: 1.0.0
+servers:
+  - url: https://salesforce-mcp-server-seven.vercel.app
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      in: header
+      name: x-api-key
+security:
+  - api_key: []
+
+paths:
+  /search:
+    post:
+      summary: Search Salesforce accounts
+      operationId: searchSalesforceAccounts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+      responses:
+        '200':
+          description: List of search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        title:
+                          type: string
+                        snippet:
+                          type: string
+                        url:
+                          type: string
+
+  /salesforce/account:
+    post:
+      summary: Create a new Salesforce Account
+      operationId: createAccount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Name:
+                  type: string
+                Website:
+                  type: string
+                BillingCity:
+                  type: string
+                BillingCountry:
+                  type: string
+                AIM__Sector__c:
+                  type: string
+                One_Liner__c:
+                  type: string
+                Products_Services__c:
+                  type: string
+                Strategic_Initiatives__c:
+                  type: string
+                Recent_Investments__c:
+                  type: string
+                RecordTypeId:
+                  type: string
+      responses:
+        '200':
+          description: Account created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  success:
+                    type: boolean
+
+  /salesforce/account/{id}:
+    patch:
+      summary: Update Salesforce Account fields
+      operationId: updateAccount
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Website:
+                  type: string
+                BillingCity:
+                  type: string
+                BillingCountry:
+                  type: string
+                AIM__Sector__c:
+                  type: string
+                One_Liner__c:
+                  type: string
+                Products_Services__c:
+                  type: string
+                Strategic_Initiatives__c:
+                  type: string
+                Recent_Investments__c:
+                  type: string
+      responses:
+        '200':
+          description: Account updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  success:
+                    type: boolean
+
+    get:
+      summary: Get Salesforce Account by ID
+      operationId: getAccountById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Account record
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Id:
+                    type: string
+                  Name:
+                    type: string
+                  Website:
+                    type: string
+                  BillingCity:
+                    type: string
+                  BillingCountry:
+                    type: string
+
+  /salesforce/contact:
+    post:
+      summary: Create Salesforce Contact
+      operationId: createContact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                FirstName:
+                  type: string
+                LastName:
+                  type: string
+                Email:
+                  type: string
+                AccountId:
+                  type: string
+      responses:
+        '200':
+          description: Contact created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  success:
+                    type: boolean
+
+  /salesforce/contact/{id}:
+    patch:
+      summary: Update Salesforce Contact by ID
+      operationId: updateContact
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Title:
+                  type: string
+                AIM__LinkedIn_URL__c:
+                  type: string
+                LinkedIn__c:
+                  type: string
+      responses:
+        '200':
+          description: Contact updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  success:
+                    type: boolean
+
+  /salesforce/lead:
+    post:
+      summary: Create Salesforce Lead
+      operationId: createLead
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                FirstName:
+                  type: string
+                LastName:
+                  type: string
+                Company:
+                  type: string
+                Email:
+                  type: string
+                Status:
+                  type: string
+      responses:
+        '200':
+          description: Lead created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  success:
+                    type: boolean
+
+  /salesforce/query:
+    get:
+      summary: Execute raw SOQL query
+      operationId: soqlQuery
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Query results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  records:
+                    type: array
+                    items:
+                      type: object
+
+  /salesforce/chatter/post:
+    post:
+      summary: Post to Salesforce Chatter
+      operationId: postChatterComment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                parentId:
+                  type: string
+                body:
+                  type: string
+      responses:
+        '200':
+          description: Comment posted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  id:
+                    type: string
