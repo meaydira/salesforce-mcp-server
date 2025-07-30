@@ -59,7 +59,9 @@ router.get('/openai-tools.json', (req, res) => {
           One_Liner__c: "string",
           Products_Services__c: "string",
           Strategic_Initiatives__c: "string",
-          Recent_Investments__c: "string"
+          Recent_Investments__c: "string",
+ 	  RecordTypeId": "string"
+
         },
         output: {
           id: "string",

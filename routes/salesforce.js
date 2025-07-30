@@ -52,12 +52,17 @@ router.get('/account/:id', async (req, res) => {
 router.post('/account', async (req, res) => {
   try {
     const conn = await connect();
-    const result = await conn.sobject("Account").create(req.body);
+    const { RecordTypeId, ...accountFields } = req.body;
+    const result = await conn.sobject("Account").create({
+      ...accountFields,
+      ...(RecordTypeId && { RecordTypeId })
+    });
     res.json(result);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 // Update Account
 router.patch('/account/:id', async (req, res) => {
