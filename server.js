@@ -12,25 +12,24 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// ✅ Minimal addition for ChatGPT API key requirement
+// ✅ OAuth Bearer token middleware for ChatGPT connector
 app.use((req, res, next) => {
-  const apiKey = req.headers['x-api-key'];
-  console.log('Received x-api-key:', apiKey || '(none)');
+  const authHeader = req.headers['authorization'] || '';
+  if (!authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Missing or invalid Bearer token' });
+  }
+
+  const token = authHeader.split(' ')[1];
+  console.log('Received Bearer token:', token); // 🔒 Don’t log this in prod
+
+  // TODO: validate token against Auth0 (optional)
+  req.user = { token };
   next();
 });
 
 // ✅ Health check route
 app.get('/', (req, res) => res.type('text/plain').send('OK the MCP server is alive'));
 
-// ✅ Mount API routes first
+// ✅ Mount API routes
 app.use('/search', searchRoute);
-app.use('/salesforce', salesforceRoutes);
-app.use('/rocketreach', rocketReachRoute); // ✅ NEW
-
-// ✅ Mount manifest route last to prevent override
-app.use('/.well-known', toolsManifest);
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`MCP server running on port ${PORT}`);
-});
+app.use('/salesforce', salesfor
