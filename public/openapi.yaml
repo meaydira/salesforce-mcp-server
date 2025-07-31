@@ -288,6 +288,7 @@ paths:
                     type: array
                     items:
                       type: object
+                      properties: {}  # Ensure it's not empty object without properties
 
   /salesforce/chatter/post:
     post:
@@ -344,3 +345,14 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  company:
+                    type: string
+                  linkedin:
+                    type: string
+                  phone:
+                    type: string
