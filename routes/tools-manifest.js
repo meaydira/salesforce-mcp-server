@@ -14,8 +14,7 @@ router.get('/openai-tools.json', (req, res) => {
       oauth: {
         authorization_url: "https://dev-bewgxkb5x5z82h04.us.auth0.com/authorize",
         token_url: "https://dev-bewgxkb5x5z82h04.us.auth0.com/oauth/token",
-        scopes: ["openid", "profile", "email"],
-        redirect_uri: "https://chat.openai.com/api/oauth/callback/salesforce_mcp"
+        scopes: ["openid", "profile", "email"]
       }
     },
     api: {
