@@ -9,9 +9,14 @@ router.get('/openai-tools.json', (req, res) => {
     name_for_model: "salesforce_mcp",
     description_for_model: "Fetch and update Salesforce data.",
     auth: {
-      type: "api_key",
-      authorization_type: "custom",
-      verification_tokens: {}
+      type: "oauth",
+      authorization_type: "openai",
+      oauth: {
+        authorization_url: "https://dev-bewgxkb5x5z82h04.us.auth0.com/authorize",
+        token_url: "https://dev-bewgxkb5x5z82h04.us.auth0.com/oauth/token",
+        scopes: ["openid", "profile", "email"],
+        redirect_uri: "https://chat.openai.com/api/oauth/callback/salesforce_mcp"
+      }
     },
     api: {
       type: "openapi",
