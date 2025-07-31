@@ -9,13 +9,7 @@ router.get('/openai-tools.json', (req, res) => {
     name_for_model: "salesforce_mcp",
     description_for_model: "Fetch and update Salesforce data.",
     auth: {
-      type: "oauth",
-      authorization_type: "openai",
-      oauth: {
-        authorization_url: "https://dev-bewgxkb5x5z82h04.us.auth0.com/authorize",
-        token_url: "https://dev-bewgxkb5x5z82h04.us.auth0.com/oauth/token",
-        scopes: ["openid", "profile", "email"]
-      }
+      type: "none"
     },
     api: {
       type: "openapi",

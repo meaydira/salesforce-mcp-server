@@ -25,23 +25,12 @@ app.get('/openapi.yaml', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'openapi.yaml'));
 });
 
-// ✅ OAuth middleware (only for API routes)
-const bearerMiddleware = (req, res, next) => {
-  const authHeader = req.headers['authorization'] || '';
-  if (!authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Missing or invalid Bearer token' });
-  }
+// ❌ Removed OAuth middleware
 
-  const token = authHeader.split(' ')[1];
-  console.log('Received Bearer token:', token); // ⚠️ Avoid logging this in production
-  req.user = { token };
-  next();
-};
-
-// ✅ Mount authenticated API routes
-app.use('/search', bearerMiddleware, searchRoute);
-app.use('/salesforce', bearerMiddleware, salesforceRoutes);
-app.use('/rocketreach', bearerMiddleware, rocketReachRoute);
+// ✅ Mount all API routes directly (no auth)
+app.use('/search', searchRoute);
+app.use('/salesforce', salesforceRoutes);
+app.use('/rocketreach', rocketReachRoute);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
