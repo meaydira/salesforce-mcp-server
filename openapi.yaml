@@ -19,6 +19,7 @@ components:
             openid: Basic identity
             profile: Access profile information
             email: Access email
+  schemas: {}
 
 security:
   - oauth:
@@ -238,4 +239,97 @@ paths:
       responses:
         '200':
           description: Contact updated
-          content
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  success:
+                    type: boolean
+
+  /salesforce/lead:
+    post:
+      summary: Create Salesforce Lead
+      operationId: createLead
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                FirstName:
+                  type: string
+                LastName:
+                  type: string
+                Company:
+                  type: string
+                Email:
+                  type: string
+                Status:
+                  type: string
+      responses:
+        '200':
+          description: Lead created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  success:
+                    type: boolean
+
+  /salesforce/query:
+    get:
+      summary: Execute raw SOQL query
+      operationId: soqlQuery
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Query results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  records:
+                    type: array
+                    items:
+                      type: object
+
+  /salesforce/chatter/post:
+    post:
+      summary: Post to Salesforce Chatter
+      operationId: postChatterComment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                parentId:
+                  type: string
+                body:
+                  type: string
+      responses:
+        '200':
+          description: Comment posted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  id:
+                    type: string
