@@ -168,6 +168,20 @@ router.get('/openai-tools.json', (req, res) => {
           success: "boolean",
           id: "string"
         }
+      },
+      {
+        name: "rocketreachLookup",
+        description: "Look up a contact on RocketReach by LinkedIn URL or name and company",
+        path: "/rocketreach/lookup",
+        method: "GET",
+        input: {
+          linkedin: "string",
+          name: "string",
+          company: "string"
+        },
+        output: {
+          profile: "object"
+        }
       }
     ]
   });

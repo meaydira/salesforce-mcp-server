@@ -316,3 +316,31 @@ paths:
                     type: boolean
                   id:
                     type: string
+
+  /rocketreach/lookup:
+    get:
+      summary: Lookup RocketReach profile
+      operationId: rocketreachLookup
+      parameters:
+        - in: query
+          name: linkedin
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: name
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: company
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: RocketReach profile found
+          content:
+            application/json:
+              schema:
+                type: object
